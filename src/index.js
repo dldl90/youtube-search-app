@@ -20,7 +20,10 @@ class App extends PureComponent {
     }
 
     YTSearch({key: API_KEY, term: 'dragonball z'}, (videos) => {
-      this.setState({ videos })
+      this.setState({ 
+        videos: videos,
+        selectedVideo: videos[0]
+      })
     })
   }
 
@@ -30,8 +33,10 @@ class App extends PureComponent {
     return (
       <div>
         <SearchBar />
-        <VideoDetail video={videos[1]}/>
-        <VideoList videos={videos} />
+        <VideoDetail video={selectedVideo}/>
+        <VideoList
+          onVideoSelect={selectedVideo => this.setState({selectedVideo})}
+          videos={videos} />
       </div>
     )
   }
