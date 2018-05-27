@@ -9,10 +9,11 @@ export default class SearchBar extends PureComponent {
     }
   }
 
-  onInputChange(event) {
+  onInputChange(term) {
     this.setState ({
-      term: event.target.value
+      term
     })
+    this.props.onSearchTermChange(term)
     console.log(this.state.term)
   } 
 
@@ -21,7 +22,9 @@ export default class SearchBar extends PureComponent {
 
     return (
       <div>
-        <input value={term} onChange={event => this.onInputChange(event)} />
+        <input
+          value={term}
+          onChange={event => this.onInputChange(event.target.value)} />
         <br />
         value of the input: {term}
       </div>

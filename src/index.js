@@ -8,7 +8,6 @@ import VideoDetail from './components/video_detail'
 
 const API_KEY = 'AIzaSyAi2issA38JwOiCrZqh3_7sbCRojXTtwHY'
 
-
 // Create new componnet it should produce some HTMl
 class App extends PureComponent {
   constructor(props) {
@@ -19,7 +18,11 @@ class App extends PureComponent {
       selectedVideo: null
     }
 
-    YTSearch({key: API_KEY, term: 'dragonball z'}, (videos) => {
+    this.videoSearch('dragonball z')
+  }
+
+  videoSearch(term) {
+    YTSearch({key: API_KEY, term}, (videos) => {
       this.setState({ 
         videos: videos,
         selectedVideo: videos[0]
@@ -32,7 +35,7 @@ class App extends PureComponent {
 
     return (
       <div>
-        <SearchBar />
+        <SearchBar onSearchTermChange={term => this.videoSearch(term)} />
         <VideoDetail video={selectedVideo}/>
         <VideoList
           onVideoSelect={selectedVideo => this.setState({selectedVideo})}
