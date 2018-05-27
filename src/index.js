@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 import YTSearch from 'youtube-api-search'
+import _ from 'lodash'
 
 import SearchBar from './components/search_bar'
 import VideoList from './components/video_list'
@@ -32,10 +33,11 @@ class App extends PureComponent {
 
   render() {
     const { videos, selectedVideo } = this.state
+    const videoSearch = _.debounce((term) => {this.videoSearch(term)}, 300)
 
     return (
       <div>
-        <SearchBar onSearchTermChange={term => this.videoSearch(term)} />
+        <SearchBar onSearchTermChange={videoSearch} />
         <VideoDetail video={selectedVideo}/>
         <VideoList
           onVideoSelect={selectedVideo => this.setState({selectedVideo})}
