@@ -1,15 +1,40 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
+import YTSearch from 'youtube-api-search'
 
-import App from './components/app';
-import reducers from './reducers';
+import SearchBar from './components/search_bar'
+import VideoList from './components/video_list'
+import VideoDetail from './components/video_detail'
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const API_KEY = 'AIzaSyAi2issA38JwOiCrZqh3_7sbCRojXTtwHY'
 
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+
+// Create new componnet it should produce some HTMl
+class App extends PureComponent {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      videos: [],
+      selectedVideo: null
+    }
+
+    YTSearch({key: API_KEY, term: 'dragonball z'}, (videos) => {
+      this.setState({ videos })
+    })
+  }
+
+  render() {
+    const { videos, selectedVideo } = this.state
+
+    return (
+      <div>
+        <SearchBar />
+        <VideoDetail video={videos[1]}/>
+        <VideoList videos={videos} />
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(<App />, document.querySelector('.container'))
